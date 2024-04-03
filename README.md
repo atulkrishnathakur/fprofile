@@ -1,0 +1,2 @@
+# fprofile
+fastapi project
