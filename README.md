@@ -79,3 +79,12 @@ Reference url https://fastapi.blog/blog/posts/2023-07-20-fastapi-sqlalchemy-migr
 (env) atul@atul-Lenovo-G570:~/fprofile$ alembic upgrade head
 
 ```
+
+# Hashing
+create password hashing
+https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
+
+```
+(env) atul@atul-Lenovo-G570:~/fprofile$ pip3 install "passlib[bcrypt]"
+
+```
