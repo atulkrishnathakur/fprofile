@@ -3,93 +3,94 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, ORJSONResponse
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy import Column, Integer, String
-from pydantic import BaseModel, validator, ValidationError, model_validator, EmailStr
+# from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
+# from sqlalchemy import Column, Integer, String
+# from pydantic import BaseModel, validator, ValidationError, model_validator, EmailStr
+from schema.user import UserSchemaOut, UserSchemaIn, BaseUserSchema
 from enum import Enum
-from passlib.context import CryptContext  
+from passlib.context import CryptContext
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:123456789@localhost:5432/fprofile_db"
+#SQLALCHEMY_DATABASE_URL = "postgresql://postgres:123456789@localhost:5432/fprofile_db"
+#
+#engine = create_engine(SQLALCHEMY_DATABASE_URL)
+#
+#SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+#
+#Base = declarative_base()
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+#class User(Base):
+#    __tablename__ = 'users'
+#
+#    id = Column(Integer, primary_key=True, index=True)
+#    first_name = Column(String)
+#    last_name = Column(String)
+#    username = Column(String, unique=True, index=True)
+#    email = Column(String, unique=True, index=True)
+#    hashed_password = Column(String)
+#    country = Column(Integer)
+#    state = Column(Integer)
+#    city = Column(Integer)
+#    role = Column(Integer)
+#    zeep_code = Column(String)
+#    address = Column(String)
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+#class Country(Base):
+#    __tablename__ = 'countries'
+#    
+#    id = Column(Integer, primary_key=True, index=True)
+#    country_name = Column(String)
 
-Base = declarative_base()
+#class State(Base):
+#    __tablename__ = 'states'
+#
+#    id = Column(Integer, primary_key=True, index=True)
+#    state_name = Column(String)
+#    country_id = Column(Integer)
 
-class User(Base):
-    __tablename__ = 'users'
+#class City(Base):
+#    __tablename__ = 'cities'
+#
+#    id = Column(Integer, primary_key=True, index=True)
+#    city_name = Column(String)
+#    state_id = Column(Integer)
+#    country_id = Column(Integer)
 
-    id = Column(Integer, primary_key=True, index=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    country = Column(Integer)
-    state = Column(Integer)
-    city = Column(Integer)
-    role = Column(Integer)
-    zeep_code = Column(String)
-    address = Column(String)
-
-class Country(Base):
-    __tablename__ = 'countries'
-
-    id = Column(Integer, primary_key=True, index=True)
-    country_name = Column(String)
-
-class State(Base):
-    __tablename__ = 'states'
-
-    id = Column(Integer, primary_key=True, index=True)
-    state_name = Column(String)
-    country_id = Column(Integer)
-
-class City(Base):
-    __tablename__ = 'cities'
-
-    id = Column(Integer, primary_key=True, index=True)
-    city_name = Column(String)
-    state_id = Column(Integer)
-    country_id = Column(Integer)
-
-class Role(Base):
-    __tablename__ = 'roles'
-    id = Column(Integer, primary_key=True, index=True)
-    role_name = Column(String)
-
-
-class BaseUserSchema(BaseModel):
-    first_name: str
-    last_name: str | None = None
-    email: EmailStr
-    username:str | None = None
-    role: int
-    country: int
-    state: int
-    city: int
-    address: str| None = None
-    zeep_code:str | None = None
+#class Role(Base):
+#    __tablename__ = 'roles'
+#    id = Column(Integer, primary_key=True, index=True)
+#    role_name = Column(String)
 
 
-class UserSchemaIn(BaseUserSchema):
-    password: str
-    confirm_password:str
+#class BaseUserSchema(BaseModel):
+#    first_name: str
+#    last_name: str | None = None
+#    email: EmailStr
+#    username:str | None = None
+#    role: int
+#    country: int
+#    state: int
+#    city: int
+#    address: str| None = None
+#    zeep_code:str | None = None
 
-    @model_validator(mode='after')
-    def check_passwords_match(self):
-        pw1 = self.password
-        pw2 = self.confirm_password
-        if pw1 is not None and pw2 is not None and pw1 != pw2:
-            raise ValueError('passwords do not match')
-        return self
 
-class UserSchemaOut(BaseUserSchema):
-    status_code:int
-    status:bool
+#class UserSchemaIn(BaseUserSchema):
+#    password: str
+#    confirm_password:str
+#
+#    @model_validator(mode='after')
+#    def check_passwords_match(self):
+#        pw1 = self.password
+#        pw2 = self.confirm_password
+#        if pw1 is not None and pw2 is not None and pw1 != pw2:
+#            raise ValueError('passwords do not match')
+#        return self
+#
+#class UserSchemaOut(BaseUserSchema):
+#    status_code:int
+#    status:bool
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
