@@ -88,3 +88,17 @@ https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
 (env) atul@atul-Lenovo-G570:~/fprofile$ pip3 install "passlib[bcrypt]"
 
 ```
+
+
+# JWT Authentication
+1. install python-jose
+```
+(env) atul@atul-Lenovo-G570:~/fprofile$ pip3 install python-jose
+```
+
+## generate SECRET_KEY of JWT
+1. run the below command to generate SECRET_KEY of JWT like  a9e53f2c3db459d04f147f11a056a705f87fbbba6204a42efb9a37b4aed9cf48
+
+```
+(env) atul@atul-Lenovo-G570:~/fprofile$ openssl rand -hex 32
+```

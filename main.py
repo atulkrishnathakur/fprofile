@@ -13,7 +13,7 @@ def include_router(app):
 
 
 def start_application():
-    app = app = FastAPI()
+    app = FastAPI()
     include_router(app)
     return app
 

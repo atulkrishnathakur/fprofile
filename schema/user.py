@@ -26,5 +26,13 @@ class UserSchemaIn(BaseUserSchema):
         return self
 
 class UserSchemaOut(BaseUserSchema):
-    status_code:int
-    status:bool
+    status_code:int | None = None
+    status:bool | None = None
+
+class UserInDB(BaseUserSchema):
+    hashed_password: str
+
+class Test(BaseModel):
+    username: str | None = None
+    email: str | None = None
+    full_name: str | None = None
