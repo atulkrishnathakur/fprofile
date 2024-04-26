@@ -18,5 +18,6 @@ class Settings:
     ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
     TOKEN_TYPE: str = "bearer"
     AUTH_HEADER: Dict[str,str] = {"WWW-Authenticate": "Bearer"}
+    API_KEY_HEADER_NAME="ACCESS-TOKEN"
 
 settings = Settings()
