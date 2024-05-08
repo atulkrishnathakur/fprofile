@@ -28,5 +28,8 @@ class TokenOut(BaseModel):
     address: str| None = None
     zeep_code:str | None = None
    
-    
+class Logout(BaseModel):
+    message: str | None = None
+    status: bool | None = None
+    status_code: int | None = None 
     

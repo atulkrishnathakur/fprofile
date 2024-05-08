@@ -5,6 +5,7 @@ from typing import Optional
 from core.config import settings
 from jose import jwt
 
+blacklist = set()
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
