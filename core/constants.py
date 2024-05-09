@@ -3,7 +3,11 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-class Message:
-    INCORRECT_CREDENTIALS: str = "Incorrect username or password"
+class Constants:
+    ON: bool = True
+    OFF: bool = False
+    STATUS_UNAUTHORIZED=False
+    STATUS_FORBIDDEN=False
+    STATUS_OK=True
 
-message = Message()
+constants = Constants()

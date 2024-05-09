@@ -1,5 +1,5 @@
 from database.dbconnection import Base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Boolean, Integer, String
 
 class User(Base):
     __tablename__ = 'users'
@@ -10,6 +10,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+    is_active = Column('is_active',Boolean,nullable=True, default=True)
     country = Column(Integer)
     state = Column(Integer)
     city = Column(Integer)
