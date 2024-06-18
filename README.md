@@ -332,3 +332,140 @@ server {
 ```
 You will see <b>Syntax is ok </b> if all cofiguration correct.
 
+16. install net-tools package to check IP address and port
+
+```
+apt install net-tools
+
+```
+
+17. edit the /etc/nginx/sites-available/default
+
+   - server_name: your public IP address or domain name
+
+```
+
+server {
+
+************
+	server_name 107.22.13.121;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		#try_files $uri $uri/ =404;
+		proxy_pass http://0.0.0.0:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+	}
+********************
+
+}
+
+
+```
+  - Add rule in ec2 intance to open 8080 port from security group
+
+
+18. We can run uvicorn command using three way nohup, tmux and screen. You can use only one way to run uvicorn command. Here we are describing nohup and tmux.
+   - Note: tmux latest and it has better functioalities from screen.
+   - Note: Deploy your project and run uvicorn using tmux. because it is better than nohup
+
+19. Run uvicorn using nohup command
+
+url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples/
+
+- run the nohup uvicorn main:app --host 0.0.0.0 and --port 8080 > uvicorn.log 2>&1 & because we have set the proxy_pass in /etc/nginx/sites-available/default file
+
+```
+ (env):/var/www/fprofile$ nohup uvicorn main:app --host 0.0.0.0 --port 8080 > uvicorn.log 2>&1 &
+
+```
+ - check running process
+
+ ```
+ sudo netstat -plten |grep ':8080'
+
+ ```
+ - If you have need then you can kill the process
+
+ command: kill -9 [process ID (PID)]
+
+ ```
+ kill -9 16085 
+
+ ```
+
+ - Now you can close your ssh or putty and check your public IP address your fastapi project is running
+
+20. Run uvicorn using tmux
+   - Install tmux in ec2 instance if not installed
+   - create a session in tmux. here 
+
+   $ tmux new -s [session_name]
+
+   ```
+    $ tmux new -s tmux_fprofile
+
+   ```
+
+   - You will go in a tmux screen. Here you can run any command.
+   - new activate the vertual environmennt
+   
+   ```
+    ubuntu@***:/var/www/fprofile$ source env/bin/activate
+
+   ```
+   - Now run uvicorn command in this tmux window
+     command: uvicorn main:app --host 0.0.0.0 --port 8080 > uvicorn.log 2>&1 &
+
+   ```
+   (env):/var/www/fprofile$ uvicorn main:app --host 0.0.0.0 --port 8080 > uvicorn.log 2>&1 &
+   ```
+   - Now check browser using public IP address
+   - Run the tmux ls command to show session_list 
+
+     ```
+       $ tmux ls
+
+     ```
+
+   - Detaching from a tmux session
+     - type Ctrl-b  then press d
+     - now you will come in linux terminal
+   - Attach again from session
+     - run the below command
+       command: $ tmux a -t [session_name]
+
+       ```
+        $ tmux a -t tmux_fprofile
+
+       ```
+ - You can type exit command to exit from tmux window and you come in ubunut terminal
+      
+      ```
+      $ exit
+
+      ```
+      - But now you can see your session is not available
+       
+      ```
+      $ tmux ls
+
+      ``` 
+      - But if you check netstate then you application and port is running
+
+      ```
+      $ sudo netstat -plten
+
+      ```
+ - Now you can close your ssh or putty and check your public IP address your fastapi project is running
+
+21. tmux is better than nohup and screen so deploy fastapi project with tmux.-
+   -  
+   - Now our deployment is Done
+
+
