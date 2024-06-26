@@ -59,6 +59,21 @@ sqlalchemy.url = postgresql://postgres:123456789@localhost:5432/fprofile_db
 
 ```
 
+# env.py of alembic
+Open the alembic/env.py and add below line of code 
+
+```
+*******************
+
+from database.dbconnection import Base # by atul
+
+from database.model import * # by atul
+target_metadata = Base.metadata
+
+***********************
+
+```
+
 # Auto Migration
 If you want alembic handles migrations follow this method: In the alembic folder edit env.py and find target_metadata line and edit like the following
 
@@ -278,19 +293,19 @@ note env is the virtual directory name
 
 ```
 
-12. create a index.html file in /var/www/fprofile directory for test
+14. create a index.html file in /var/www/fprofile directory for test
 
 ```
 (venv) ubuntu@********122:/var/www/fprofile$ touch index.html
 ```
 
-13. change the /etc/nginx/sites-available/default file permission
+15. change the /etc/nginx/sites-available/default file permission
 
 ```
 (venv) ubuntu@********122:/etc/nginx/sites-available$ sudo chmod ugo+rwx default
 
 ```
-14. change root in default file 
+16. change root in default file 
 
 ```
 server {
@@ -301,45 +316,45 @@ server {
 }
 ```
 
-15. restart nginx
+17. restart nginx
 
 ```
 (venv) ubuntu@********122:/etc/nginx/sites-available$ sudo systemctl restart nginx
 
 ```
 
-16. Before uploading create requirements.txt file again in your local machine
+18. Before uploading create requirements.txt file again in your local machine
 
 ```
 (env) atul@atul-Lenovo-G570:~/fprofile1$ pip3 install -r requirements.txt
 
 ```
 
-12. Upload all dirctory and files in fprofile
+19. Upload all dirctory and files in fprofile
   - Note1: do not upload .git and virtual environment dirctory like env
 
 
-14. install requirments.txt
+20. install requirments.txt
 
 ```
  (env):/var/www/fprofile$ pip3 install -r requirments.txt
 
 ```
 
-15. Test the nginx configuration
+21. Test the nginx configuration
 ```
 :etc/nginx/sites-available$ sudo nginx -t
 ```
 You will see <b>Syntax is ok </b> if all cofiguration correct.
 
-16. install net-tools package to check IP address and port
+22. install net-tools package to check IP address and port
 
 ```
 apt install net-tools
 
 ```
 
-17. edit the /etc/nginx/sites-available/default
+23. edit the /etc/nginx/sites-available/default
 
    - server_name: your public IP address or domain name
 
@@ -370,11 +385,11 @@ server {
   - Add rule in ec2 intance to open 8080 port from security group
 
 
-18. We can run uvicorn command using three way nohup, tmux and screen. You can use only one way to run uvicorn command. Here we are describing nohup and tmux.
+24. We can run uvicorn command using three way nohup, tmux and screen. You can use only one way to run uvicorn command. Here we are describing nohup and tmux.
    - Note: tmux latest and it has better functioalities from screen.
    - Note: Deploy your project and run uvicorn using tmux. because it is better than nohup
 
-19. Run uvicorn using nohup command
+25. Run uvicorn using nohup command
 
 url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples/
 
@@ -401,7 +416,7 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
 
  - Now you can close your ssh or putty and check your public IP address your fastapi project is running
 
-20. Run uvicorn using tmux
+26. Run uvicorn using tmux
    - Install tmux in ec2 instance if not installed
    - create a session in tmux. here 
 
@@ -414,7 +429,7 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
 
    - You will go in a tmux screen. Here you can run any command.
    - new activate the vertual environmennt
-   
+
    ```
     ubuntu@***:/var/www/fprofile$ source env/bin/activate
 
@@ -464,8 +479,18 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
       ```
  - Now you can close your ssh or putty and check your public IP address your fastapi project is running
 
-21. tmux is better than nohup and screen so deploy fastapi project with tmux.-
-   -  
-   - Now our deployment is Done
+27. tmux is better than nohup and screen so deploy fastapi project with tmux.
+   - Fastapi source code you run using nginx server
 
+
+28. set the alembic.ini file
+
+sqlalchemy.url = postgresql://postgres:[password]@[endpoint]:5432/fprofile_db
+
+```
+sqlalchemy.url = postgresql://postgres:123456789@testpostresql.ctk6csmmwzzi.us-east-1.rds.amazonaws.com:5432/fprofile_db
+
+```
+
+29. set the .env file for database connection
 
