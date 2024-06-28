@@ -393,19 +393,31 @@ server {
 
 url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples/
 
-- run the nohup uvicorn main:app --host 0.0.0.0 and --port 8080 > uvicorn.log 2>&1 & because we have set the proxy_pass in /etc/nginx/sites-available/default file
+- run the nohup uvicorn main:app --host 0.0.0.0 and --port 8080 --reload > uvicorn.log 2>&1 & because we have set the proxy_pass in /etc/nginx/sites-available/default file
+- note: If you run uvicorn command with --reload then you can upload changes and your change will be reflect. Some time you have need to fix the bug
 
 ```
+ # run with --reload option
+ (env):/var/www/fprofile$ nohup uvicorn main:app --host 0.0.0.0 --port 8080 --reload > uvicorn.log 2>&1 &
+
+ # Or run without --reload option
  (env):/var/www/fprofile$ nohup uvicorn main:app --host 0.0.0.0 --port 8080 > uvicorn.log 2>&1 &
 
+
 ```
+ - run the nohup uvicorn main:app --host 0.0.0.0 and --port 8080 --reload > uvicorn.log 2>&1 & because we have set the proxy_pass in /etc/nginx/sites-available/default file
+ - note: If you run uvicorn command without --reload then you can upload changes but your chage will not be reflect. Your project stable and you have not need to change then run uvicorn without --reload option
+
+ - Now you can close your ssh or putty and check your public IP address your fastapi project is running
+
  - check running process
 
  ```
  sudo netstat -plten |grep ':8080'
 
  ```
- - If you have need then you can kill the process
+ - If you run your uvicorn command without --reload and you want to upload some chage and you want to reflect your change then you can kill the process
+ - After killing process your project will give forbiden error
 
  command: kill -9 [process ID (PID)]
 
@@ -413,8 +425,6 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
  kill -9 16085 
 
  ```
-
- - Now you can close your ssh or putty and check your public IP address your fastapi project is running
 
 26. Run uvicorn using tmux
    - Install tmux in ec2 instance if not installed
@@ -424,7 +434,7 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
 
    ```
     $ tmux new -s tmux_fprofile
-
+    
    ```
 
    - You will go in a tmux screen. Here you can run any command.
@@ -435,13 +445,22 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
 
    ```
    - Now run uvicorn command in this tmux window
-     command: uvicorn main:app --host 0.0.0.0 --port 8080 > uvicorn.log 2>&1 &
-
+     command: uvicorn main:app --host 0.0.0.0 --port 8080 --reload > uvicorn.log 2>&1 &
+  
    ```
+    #run uvicorn with --reload option
+
+   (env):/var/www/fprofile$ uvicorn main:app --host 0.0.0.0 --port 8080 --reload > uvicorn.log 2>&1 &
+    
+    #run uvicorn without --relaod option
+
    (env):/var/www/fprofile$ uvicorn main:app --host 0.0.0.0 --port 8080 > uvicorn.log 2>&1 &
+
    ```
    - Now check browser using public IP address
    - Run the tmux ls command to show session_list 
+   - note: If you run uvicorn command with --reload then you can upload changes and your change will be reflect. Some time you have need to fix the bug
+   - note: If you run uvicorn command without --reload then you can upload changes but your chage will not be reflect. Your project stable and you have not need to change then run uvicorn without --reload option
 
      ```
        $ tmux ls
@@ -465,7 +484,7 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
       $ exit
 
       ```
-      - But now you can see your session is not available
+      - But now you can see your session is not available so you detach instead of exit command 
        
       ```
       $ tmux ls
@@ -482,8 +501,9 @@ url for help: https://www.geeksforgeeks.org/nohup-command-in-linux-with-examples
 27. tmux is better than nohup and screen so deploy fastapi project with tmux.
    - Fastapi source code you run using nginx server
 
+28. After some time letter like 3 month or 6 month and you not remember that you run uvicorn with tmux or nohup then and you want to stop the running of project then kill the process usig kill command. And you run again uvicorn command to run your applicatio.
 
-28. set the alembic.ini file
+29. set the alembic.ini file
 
 sqlalchemy.url = postgresql://postgres:[password]@[endpoint]:5432/fprofile_db
 
@@ -492,5 +512,5 @@ sqlalchemy.url = postgresql://postgres:123456789@testpostresql.ctk6csmmwzzi.us-e
 
 ```
 
-29. set the .env file for database connection
+30. set the .env file for database connection
 
