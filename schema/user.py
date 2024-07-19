@@ -1,4 +1,5 @@
 from pydantic import BaseModel, model_validator, EmailStr
+from typing import List
 
 class BaseUserSchema(BaseModel):
     first_name: str
@@ -12,6 +13,11 @@ class BaseUserSchema(BaseModel):
     address: str| None = None
     zeep_code:str | None = None
 
+class BaseUserListSchema(BaseModel):
+    id: int
+    first_name: str
+    last_name: str | None = None
+    email: EmailStr
 
 class UserSchemaIn(BaseUserSchema):
     password: str
@@ -31,6 +37,12 @@ class UserSchemaOut(BaseUserSchema):
 
 class UserInDB(BaseUserSchema):
     hashed_password: str
+
+
+class AllUserSchemaOut(BaseModel):
+    status_code:int | None = None
+    status:bool | None = None
+    data: list[BaseUserListSchema] | None = None
 
 class Test(BaseModel):
     username: str | None = None

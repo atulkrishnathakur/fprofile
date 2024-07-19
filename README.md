@@ -1,3 +1,19 @@
+# Project Task
+1. Admin and Super admin will see all staff users list
+2. Supper Admin will see all staff and admin users list
+3. create and api to show about self
+
+# What is Annotate
+1. https://fastapi.tiangolo.com/python-types/ 
+2. https://www.geeksforgeeks.org/function-annotations-python/
+3. https://www.educative.io/answers/how-annotations-are-used-in-python
+4. https://stackoverflow.com/questions/71898644/how-to-use-python-typing-annotated 
+5. https://stackoverflow.com/questions/66357933/adding-metadata-annotations-to-python-variables 
+6. https://docs.python.org/3.9/library/typing.html#typing.Annotated
+
+# pydantic schema model URL 
+1. https://fastapi.tiangolo.com/tutorial/body-nested-models/
+
 # fprofile
 fastapi project
 

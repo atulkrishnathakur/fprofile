@@ -4,7 +4,6 @@ from fastapi import Depends, FastAPI, HTTPException, status, Request
 from fastapi import APIRouter
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database.session import get_db
@@ -13,49 +12,15 @@ from core.config import settings
 from core.security import create_access_token, blacklist
 from core.message import message
 from core.constants import constants
+from core.auth import authenticate_user, get_current_active_user
 from core.custom_exception import CustomException
 from database.repository.login import get_user
 from schema.token import Token, TokenData, TokenCredentialIn,TokenOut, Logout
 from schema.user import UserSchemaOut, BaseUserSchema
 from fastapi.responses import JSONResponse, ORJSONResponse
-from fastapi.security import APIKeyHeader
-
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-#oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-header_scheme = APIKeyHeader(name=settings.API_KEY_HEADER_NAME)
+from core.apikeyheader import header_scheme
 
 router = APIRouter()
-
-def authenticate_user(username,password,db):
-    user = get_user(db,username)
-    if not user:
-        return False
-    if not HashData.verify_password(password, user.hashed_password):
-        return False    
-    return user
-
-async def get_current_user(token: Annotated[str, Depends(header_scheme)], db: Annotated[Session, Depends(get_db)]):
-
-    if token in blacklist:
-        http_status_code = status.HTTP_401_UNAUTHORIZED  
-        raise CustomException(status_code=http_status_code,status=constants.STATUS_UNAUTHORIZED,message=message.NEED_TO_LOGIN,data=[])
-    else:    
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        email: str = payload.get("email")
-        token_data = TokenData(email=email)
-        user = get_user(db, email=token_data.email)
-        return user
-
-async def get_current_active_user(
-    current_user: Annotated[UserSchemaOut, Depends(get_current_user)],
-):
-    if(current_user.is_active == False):
-        raise CustomException(status_code=status.HTTP_403_FORBIDDEN,status=constants.STATUS_FORBIDDEN,message=message.INACTIVE_USER,data=[])
-    return current_user
-
 
 @router.post("/login",response_model=TokenOut, response_class=JSONResponse,name="login")
 async def login_for_access_token(credentials: TokenCredentialIn,db:Session = Depends(get_db)):
