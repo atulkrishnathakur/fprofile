@@ -2,14 +2,13 @@ from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import status
 from typing import Annotated
-from fastapi import Depends, FastAPI, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from schema.user import UserSchemaOut, UserSchemaIn, BaseUserSchema, AllUserSchemaOut
 from database.session import get_db
 from database.repository.user import create_new_user, get_all_user
 from fastapi.responses import JSONResponse, ORJSONResponse
 from database.repository.login import get_user
-from core.auth import get_current_user, get_current_active_user
+from core.auth import authenticate_user, get_current_active_user
 
 router = APIRouter()
 
