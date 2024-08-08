@@ -27,39 +27,7 @@ from core.logger import logger
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-#oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-#header_scheme = APIKeyHeader(name=settings.API_KEY_HEADER_NAME)
-
 router = APIRouter()
-'''
-def authenticate_user(username,password,db):
-    user = get_user(db,username)
-    if not user:
-        return False
-    if not HashData.verify_password(password, user.hashed_password):
-        return False    
-    return user
-
-async def get_current_user(token: Annotated[str, Depends(header_scheme)], db: Annotated[Session, Depends(get_db)]):
-
-    if token in blacklist:
-        http_status_code = status.HTTP_401_UNAUTHORIZED  
-        raise CustomException(status_code=http_status_code,status=constants.STATUS_UNAUTHORIZED,message=message.NEED_TO_LOGIN,data=[])
-    else:    
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        email: str = payload.get("email")
-        token_data = TokenData(email=email)
-        user = get_user(db, email=token_data.email)
-        return user
-
-async def get_current_active_user(
-    current_user: Annotated[UserSchemaOut, Depends(get_current_user)],
-):
-    if(current_user.is_active == False):
-        raise CustomException(status_code=status.HTTP_403_FORBIDDEN,status=constants.STATUS_FORBIDDEN,message=message.INACTIVE_USER,data=[])
-    return current_user
-'''
 
 @router.post("/login",response_model=TokenOut, response_class=JSONResponse,name="login")
 async def login_for_access_token(credentials: TokenCredentialIn,db:Session = Depends(get_db)):
@@ -115,6 +83,7 @@ async def logout(token: Annotated[str, Depends(header_scheme)]):
     response_data = Logout(**data)
     response = JSONResponse(content=response_data.dict(),status_code=http_status_code)
     return response
-@router.get("/test")
+@router.get("/test",name="test")
 async def read_users_me():
-    return "hello"
+    url = router.url_path_for("login")
+    return url
