@@ -10,6 +10,14 @@ def create_new_user(db, user):
     db.refresh(db_user)
     return db_user
 
+def update_user(db, currentUser, profileImage):
+    db_user = db.query(User).filter(User.id == currentUser.id).first()
+    db_user.profile_img = profileImage
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 def get_all_user(db):
     try:
         alluser = db.query(User).all()

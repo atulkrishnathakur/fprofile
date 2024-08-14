@@ -44,6 +44,9 @@ class AllUserSchemaOut(BaseModel):
     status:bool | None = None
     data: list[BaseUserListSchema] | None = None
 
+class ImageData(BaseModel):
+    image_base64: str | None = None
+
 class Test(BaseModel):
     username: str | None = None
     email: str | None = None

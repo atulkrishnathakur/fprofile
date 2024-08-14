@@ -530,3 +530,12 @@ sqlalchemy.url = postgresql://postgres:123456789@testpostresql.ctk6csmmwzzi.us-e
 
 30. set the .env file for database connection
 
+
+
+# upload image by pillow
+1. install the pillow
+
+```
+(env) atul@atul-Lenovo-G570:~/fprofile$ pip3 install pillow
+
+```

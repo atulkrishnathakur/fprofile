@@ -3,12 +3,18 @@ from fastapi import Depends
 from fastapi import status
 from typing import Annotated
 from sqlalchemy.orm import Session
-from schema.user import UserSchemaOut, UserSchemaIn, BaseUserSchema, AllUserSchemaOut
+from schema.user import UserSchemaOut, UserSchemaIn, BaseUserSchema, AllUserSchemaOut, ImageData
 from database.session import get_db
-from database.repository.user import create_new_user, get_all_user
+from database.repository.user import create_new_user, get_all_user,update_user
 from fastapi.responses import JSONResponse, ORJSONResponse
 from database.repository.login import get_user
 from core.auth import authenticate_user, get_current_active_user
+import base64
+import os
+import io
+from PIL import Image
+import string
+import random
 
 router = APIRouter()
 
@@ -73,3 +79,41 @@ def userlist(current_user: Annotated[UserSchemaOut, Depends(get_current_active_u
         }
         response = JSONResponse(content=user_data,status_code=http_status_code)
     return response
+
+@router.post('/upload-image',name="uploadimage")
+def upload_image(current_user: Annotated[UserSchemaOut, Depends(get_current_active_user)],db:Session = Depends(get_db), image_data:ImageData = None ):
+    try:
+        # decode the base64
+        image_data_bytes = base64.b64decode(image_data.image_base64)
+        N = 7
+        randstr = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
+        # Define the path to save the image
+        uploaddir = "uploads"
+        filename="profile_"+randstr+".png"
+        file_path = os.path.join(uploaddir,filename)
+
+        #save the image
+        with open(file_path, "wb") as image_file:
+            image_file.write(image_data_bytes)
+        
+
+        updateduser = update_user(db=db, currentUser=current_user, profileImage=filename)
+        mydict = {}
+        mydict['photimage'] = f"/"+file_path
+
+        http_status_code = status.HTTP_200_OK
+        uploaded_data = {
+            "status_code": http_status_code,
+            "status":True,
+            "data":mydict
+        }
+        response = JSONResponse(content=uploaded_data,status_code=http_status_code)
+        return response
+    except ValueError as e:
+        http_status_code = 500
+        data = {
+            "status_code": http_status_code,
+            "status":False,
+        }
+        response = JSONResponse(content=data,status_code=http_status_code)
+        return response

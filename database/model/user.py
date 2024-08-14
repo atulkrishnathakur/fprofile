@@ -17,3 +17,4 @@ class User(Base):
     role = Column(Integer)
     zeep_code = Column(String)
     address = Column(String)
+    profile_img = Column(String)
