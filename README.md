@@ -531,6 +531,8 @@ sqlalchemy.url = postgresql://postgres:123456789@testpostresql.ctk6csmmwzzi.us-e
 30. set the .env file for database connection
 
 
+# Upload image without pillow
+1. You can upload image without pillow
 
 # upload image by pillow
 1. install the pillow

@@ -117,3 +117,41 @@ def upload_image(current_user: Annotated[UserSchemaOut, Depends(get_current_acti
         }
         response = JSONResponse(content=data,status_code=http_status_code)
         return response
+
+
+@router.post("/upload-image-pillow", name="uploadimage_pillow")
+def upload_image_pillow(current_user: Annotated[UserSchemaOut, Depends(get_current_active_user)],db:Session = Depends(get_db), image_data:ImageData = None):
+    try:
+        # Decode the base64 image
+        image_data_bytes = base64.b64decode(image_data.image_base64)
+        N = 7
+        randstr = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
+        uploaddir = "uploads"
+        filename="profile_pillow_"+randstr+".png"
+        file_path = os.path.join(uploaddir,filename)
+
+        # Convert binary data to an image
+        image = Image.open(io.BytesIO(image_data_bytes))
+
+        # Save the image to a dictionary
+        image.save(uploaddir+'/'+filename)
+        updateduser = update_user(db=db, currentUser=current_user, profileImage=filename)
+        mydict = {}
+        mydict['photimage'] = f"/"+file_path
+        http_status_code = status.HTTP_200_OK
+        uploaded_data = {
+            "status_code": http_status_code,
+            "status":True,
+            "data":mydict
+        }
+        response = JSONResponse(content=uploaded_data,status_code=http_status_code)
+        return response
+
+    except ValueError as e:
+        http_status_code = 500
+        data = {
+            "status_code": http_status_code,
+            "status":False,
+            }
+        response = JSONResponse(content=data,status_code=http_status_code)
+        return response
