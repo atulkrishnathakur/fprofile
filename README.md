@@ -541,3 +541,34 @@ sqlalchemy.url = postgresql://postgres:123456789@testpostresql.ctk6csmmwzzi.us-e
 (env) atul@atul-Lenovo-G570:~/fprofile$ pip3 install pillow
 
 ```
+
+
+
+# response_model
+1. response_model used to show in swagger in 200 status code in Successfull Response. It is not server response. But here, You will see a response for example. If you remove it the you will not see 200 status code for example of response.
+
+# Send Email from gmail smtp
+ref. https://www.geeksforgeeks.org/send-mail-gmail-account-using-python/
+
+1. enable two factor authentication
+2. Search App passwords
+3. enter your app name
+4. click on create button
+5. copy the 16 character password
+
+
+```
+# creates SMTP session
+s = smtplib.SMTP('smtp.gmail.com', 587)
+# start TLS for security
+s.starttls()
+# Authentication
+s.login("smtp_authentication_email_id", "smtp_authentication_email_id_password")
+# message to be sent
+message = "Message_you_need_to_send"
+# sending the mail
+s.sendmail("sender_email_id", "receiver_email_id", message)
+# terminating the session
+s.quit()
+
+```
