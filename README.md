@@ -572,3 +572,9 @@ s.sendmail("sender_email_id", "receiver_email_id", message)
 s.quit()
 
 ```
+
+# send mail using fastapi-mail library
+https://sabuhish.github.io/fastapi-mail/getting-started/
+https://pypi.org/project/fastapi-mail/ 
+
+1. It is a third party library for fastapi.
